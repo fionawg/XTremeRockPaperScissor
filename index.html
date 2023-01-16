@@ -1,0 +1,288 @@
+<!--Fiona Wang, Web Dev Period 7+8 Section 85, Dec 14, Level 3 - XTreme Rock Paper Scissor -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XTreme Rock Paper Scissor</title>
+    <script>
+        var playerOne = ["scissor", "scissor", "scissor", "scissor", "scissor",
+            "rock", "rock", "rock", "rock", "rock",
+            "paper", "paper", "paper", "paper", "paper"];
+        var computer = ["scissor", "scissor", "scissor", "scissor", "scissor",
+            "rock", "rock", "rock", "rock", "rock",
+            "paper", "paper", "paper", "paper", "paper"];
+
+        function initialize() {
+            displayOne = document.getElementById("display1");
+            displayTwo = document.getElementById("display2");
+
+            rock = document.getElementById("numRock");
+            paper = document.getElementById("numPaper");
+            scissor = document.getElementById("numScissor");
+
+            rock.innerHTML = 5;
+            paper.innerHTML = 5;
+            scissor.innerHTML = 5;
+
+            log = document.getElementById("log");
+            log.innerHTML = "This is where you will get updates about the game.";
+        }
+
+        function findNum(weapon) {
+            let countt = 0;
+            for (let i = 0; i < playerOne.length; i++) {
+                if (playerOne[i] === weapon) {
+                    countt++;
+                }
+            }
+            return countt;
+        }
+
+        function restart() {
+            playerOne = ["scissor", "scissor", "scissor", "scissor", "scissor",
+                "rock", "rock", "rock", "rock", "rock",
+                "paper", "paper", "paper", "paper", "paper"];
+            computer = ["scissor", "scissor", "scissor", "scissor", "scissor",
+                "rock", "rock", "rock", "rock", "rock",
+                "paper", "paper", "paper", "paper", "paper"];
+            displayOne.src = "/imgs/blank.png";
+            displayTwo.src = "/imgs/blank.png";
+            rock.innerHTML = 5;
+            paper.innerHTML = 5;
+            scissor.innerHTML = 5;
+            log.innerHTML = "This is where you will get updates about the game.";
+            lastWeapon = "";
+            count = 0;
+            tieCount = 0;
+        }
+
+        function computerPlays() {
+            if (computer.length === 0) {
+                setTimeout(() => { confirm("YOU WON! CLICK RESET TO PLAY AGAIN!"); }, 500);
+                log.innerHTML += "<br />YOU WON! Click reset to play again.";
+            }
+            let rand = parseInt(Math.random() * computer.length);
+            return computer[rand];
+        }
+
+        let lastWeapon = "";
+        let count = 0;
+        let tieCount = 0;
+        function play(weapon) {
+            compChoice = computerPlays();
+            displayOne.src = "imgs/" + weapon + ".png";
+            displayTwo.src = "imgs/" + compChoice + ".png";
+            if (weapon === "rock" && findNum('rock') !== 0) {
+                if (compChoice === "scissor") {
+                    playerOne.push("scissor");
+                    computer.splice(computer.indexOf("scissor"), 1);
+                    setTimeout(() => { confirm("You won this round!"); }, 500);
+                    log.innerHTML += "<br />Rock vs Scissor. You won a scissor.";
+                    tieCount = 0;
+                } else if (compChoice === "paper") {
+                    computer.push("rock");
+                    playerOne.splice(playerOne.indexOf("rock"), 1);
+                    setTimeout(() => { confirm("You lost this round."); }, 500);
+                    log.innerHTML += "<br />Rock vs Paper. You lost a rock.";
+                    tieCount = 0;
+                } else {
+                    setTimeout(() => { confirm("It's a tie."); }, 500);
+                    log.innerHTML += "<br />Rock vs Rock. It's a tie.";
+                    tieCount++;
+                    if (tieCount === 3) {
+                        playerOne.splice(Math.random()*playerOne.length+1, 1);
+                        computer.splice(Math.random()*computer.length+1, 1);
+                        tieCount = 0;
+                    }
+                }
+            } else if (weapon === "rock" && findNum('rock') === 0) {
+                setTimeout(() => { confirm("You have no more rocks."); }, 500);
+                log.innerHTML += "<br />You have no more rocks. Try again!";
+            }
+            if (weapon === "paper" && findNum('paper') !== 0) {
+                if (compChoice === "rock") {
+                    playerOne.push("rock");
+                    computer.splice(computer.indexOf("rock"), 1);
+                    setTimeout(() => { confirm("You won this round!"); }, 500);
+                    log.innerHTML += "<br />Paper vs Rock. You won a rock.";
+                    tieCount = 0;
+                } else if (compChoice === "scissor") {
+                    computer.push("paper");
+                    playerOne.splice(playerOne.indexOf("paper"), 1);
+                    setTimeout(() => { confirm("You lost this round."); }, 500);
+                    log.innerHTML += "<br />Paper vs Scissor. You lost a paper.";
+                    tieCount = 0;
+                } else {
+                    setTimeout(() => { confirm("It's a tie."); }, 500);
+                    log.innerHTML += "<br />Paper vs Paper. It's a tie.";
+                    tieCount++;
+                    if (tieCount === 3) {
+                        playerOne.splice(Math.random()*playerOne.length+1, 1);
+                        computer.splice(Math.random()*computer.length+1, 1);
+                        tieCount = 0;
+                    }
+                }
+            } else if (weapon === "paper" && findNum('paper') === 0) {
+                setTimeout(() => { confirm("You have no more papers."); }, 500);
+                log.innerHTML += "<br />You have no more papers. Try again!";
+            }
+            if (weapon === "scissor" && findNum('scissor') !== 0) {
+                if (compChoice === "paper") {
+                    playerOne.push("paper");
+                    computer.splice(computer.indexOf("paper"), 1);
+                    setTimeout(() => { confirm("You won this round!"); }, 500);
+                    log.innerHTML += "<br />Scissor vs Paper. You won a paper.";
+                    tieCount = 0;
+                } else if (compChoice === "rock") {
+                    computer.push("scissor");
+                    playerOne.splice(playerOne.indexOf("scissor"), 1);
+                    setTimeout(() => { confirm("You lost this round!"); }, 500);
+                    log.innerHTML += "<br />Scissor vs Rock. You lost a scissor.";
+                    tieCount = 0;
+                } else {
+                    setTimeout(() => { confirm("It's a tie."); }, 500);
+                    log.innerHTML += "<br />Scissor vs Scissor. It's a tie.";
+                    tieCount++;
+                    if (tieCount === 3) {
+                        playerOne.splice(Math.random()*playerOne.length+1, 1);
+                        computer.splice(Math.random()*computer.length+1, 1);
+                        tieCount = 0;
+                    }
+                }
+            } else if (weapon === "scissor" && findNum('scissor') === 0) {
+                setTimeout(() => { confirm("You have no more scissors."); }, 500);
+                log.innerHTML += "<br />You have no more scissors. Try again!";
+            }
+
+            if (rock.innerHTML == 0 && paper.innerHTML == 0 && scissor.innerHTML == 0) {
+                setTimeout(() => { confirm("You lost the game. Click reset to try again."); }, 500);
+                log.innerHTML += "<br />You Lost... Click reset to try again.";
+            }
+
+            if (lastWeapon === "rock" && weapon === "rock") {
+                count++;
+            } else if (lastWeapon === "paper" && weapon === "paper") {
+                count++;
+            } else if (lastWeapon === "scissor" && weapon === "scissor") {
+                count++;
+            } else {
+                count = 0;
+            }
+            if (count === 2) {
+                setTimeout(() => { confirm(weapon + " broke. It will be removed from the game."); }, 1000);
+                for (let i = 0; i < playerOne.length; i++) {
+                    if (playerOne[i] === weapon) {
+                        playerOne.splice(i, 1);
+                        i--;
+                    }
+                }
+                for (let i = 0; i < computer.length; i++) {
+                    if (computer[i] === weapon) {
+                        computer.splice(i, 1);
+                        i--;
+                    }
+                }
+                count = 0;
+            }
+
+            lastWeapon = weapon;
+
+            rock.innerHTML = findNum('rock');
+            paper.innerHTML = findNum('paper');
+            scissor.innerHTML = findNum('scissor');
+        }
+    </script>
+    <style>
+        * {
+            background-color: rgb(203, 238, 249);
+            font-family:'Courier New', Courier, monospace;
+        }
+
+        h1 {
+            background: rgb(229, 207, 249);
+            padding: 10px;
+        }
+
+        h2 {
+            background: rgb(252, 201, 221);
+            padding: 10px;
+        }
+
+        p {
+            padding-left: 10px;
+        }
+
+        button {
+            margin-left: 10px;
+            background-color: lightgray;
+        }
+
+        img {
+            border: 3px solid darkgray;
+            align-items: center;
+        }
+
+        @media (max-width: 700px) {
+            img {
+                max-width: 140px;
+                max-height: 140px;
+            }
+        }
+
+        @media (min-width: 701px) and (max-width: 824px) {
+            img {
+                max-width: 200px;
+                max-height: 200px;
+            }
+        }
+
+        @media (min-width: 825px) {
+            img {
+                max-width: 250px;
+                max-height: 250px;
+            }
+        }
+    </style>
+</head>
+
+<body onload="initialize();">
+    <h1>XTreme Rock Paper Scissor</h1>
+    <h2>Instructions:</h2>
+    <ul>
+        <li>This is like rock paper scissor but with limited amounts of each.</li>
+        <li>You and the computer both start with five each.</li>
+        <li>Click on the image to chose it.</li>
+        <li>In the display, the first image is your weapon, and the second is the computer's.</li>
+        <li>If you beat the computer, you will get their weapon.</li>
+        <li>If there is a tie, both players recovers their own weapon.</li>
+        <li>If there is a tie three times in a row, both you and the computer will lose a random weapon.</li>
+        <li>The game ends when one player has all the weapons.</li>
+        <li>If you play a weapon three times in a row, the weapon is removed from the game.</li>
+        <li>The reset button is at the end of the screen.</li>
+    </ul>
+
+    <h2>Display:</h2>
+    <img src="/imgs/blank.png" id="display1">
+    <img src="/imgs/blank.png" id="display2">
+
+    <h2>Player:</h2>
+    <img src="/imgs/rock.png" onclick="play('rock');">
+    <img src=" /imgs/paper.png" onclick="play('paper');">
+    <img src="/imgs/scissor.png" onclick="play('scissor');">
+
+    <p>Rock Left: <span id="numRock">5</span></p>
+    <p>Paper Left: <span id="numPaper">5</span></p>
+    <p>Scissor Left: <span id="numScissor">5</span></p>
+
+    <h2>Log:</h2>
+    <p id="log"></p>
+
+    <button onclick="restart();">Reset</button>
+    <br /><br />
+</body>
+
+</html>
